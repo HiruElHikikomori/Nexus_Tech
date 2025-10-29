@@ -1,4 +1,6 @@
 @extends('layout.PlantillaAdmin')
+
+{{-- No se ayuda lol --}}
 @section('content')
 
 

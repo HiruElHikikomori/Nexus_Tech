@@ -1,7 +1,7 @@
 @extends('layout.PlantillaUser')
 @section('content')
 
-
+{{-- No se ayuda lol --}}
 <div class="container bg-accent1 m-auto rounded text-white p-5">
     <h3>Filtro de búsqueda @if(request('query')) para "{{ request('query') }}" @endif</h3>
 

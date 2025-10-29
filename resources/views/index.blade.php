@@ -1,5 +1,7 @@
 @extends("layout.PlantillaUser")
 @section('content')
+
+{{-- No se ayuda lol --}}
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-lg-15 mx-auto"
