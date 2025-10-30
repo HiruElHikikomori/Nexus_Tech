@@ -1,5 +1,5 @@
 @extends('layout.PlantillaAdmin') {{-- Asume que tienes un layout principal llamado app.blade.php --}}
-{{-- No se ayuda lol --}}
+{{-- No se ayuda jhjh --}}
 @section('content')
 
 <div class="container bg-accent1 card p-5 text-white">
