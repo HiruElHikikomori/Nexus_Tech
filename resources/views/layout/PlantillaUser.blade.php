@@ -24,7 +24,7 @@
 
 
 <body class="d-flex flex-column bg-primary min-vh-100 " data-bs-theme="dark" style="font-family:montserrat, sans-serif">
-    
+
     <!-- 🔷 NAVBAR: barra superior de navegación -->
     <nav class="bg-secondary d-flex py-3 navbar navbar-expand-lg">
         <div class="container-fluid">
@@ -65,7 +65,7 @@
                             @csrf
                             <button type="submit" class="nav-link link-danger px-2">Cerrar sesión</button>
                         </form>
-                        
+
                     </li>
                     @endauth
 
@@ -73,22 +73,22 @@
                     <li class="nav-item rounded border-0 input-group-text">
                         <form class="d-flex align-items-center" role="search" action="{{ route('products.search') }}" method="GET">
                             <input class="form-control rounded border-0 w-100" type="search" placeholder="Buscar" aria-label="Search" name="query" value="{{ request('query') }}">
-                            
+
                             <button class="btn" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
-                            
+
                         </form>
                     </li>
-                    
+
 
                     <!-- 🔹 Botón del carrito -->
                     <li class="nav-item d-flex align-items-center">
-                        <a class="btn btn-lg rounded border-0" href="{{ route('user.cart') }}">
+                        <a class="btn btn-lg rounded border-0" href="{{ route('cart.index') }}">
                             <i class="bi bi-cart"></i>
                         </a>
                     </li>
-                    
+
                 </ul>
             </div>
         </div>
@@ -97,12 +97,12 @@
     <main class="py-5 flex-grow-1" style="font-family:roboto">
         <!-- 🔻 Contenido dinámico (Blade) -->
         @yield('content')
-        
+
     </main>
 
-    
 
-    
+
+
 
     {{-- Contenedor para las notificaciones Toast (normalmente en layout.index) --}}
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -120,7 +120,7 @@
     <footer class="footer d-flex text-light mt-auto bg-secondary">
         <div class="container-fluid py-3 mx-5">
             <div class="row align-items-center text-center text-md-start justify-content-between m-auto">
-                
+
                 <!-- 🔹 Columna 1: Texto informativo de la empresa -->
                 <div class="col-md-4 mb-2 mb-md-0">
                     <small>
@@ -165,7 +165,7 @@
             </div>
         </div>
     </footer>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     {{-- Script de carrito --}}
     <script src="{{ asset('js/cart.js') }}"></script>

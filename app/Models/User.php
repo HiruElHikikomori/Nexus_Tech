@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * Class User
- * 
+ *
  * @property int $user_id
  * @property string $name
  * @property string $last_name
@@ -24,7 +24,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $address
  * @property string $profile_img_name
  * @property int $rol_id
- * 
+ *
  * @property Role $role
  * @property Collection|Cart[] $carts
  *
@@ -65,7 +65,10 @@ class User extends Authenticatable
 	{
 		return $this->belongsTo(Cart::class, 'cart_id');
 	}
-
+    public function userProducts()
+    {
+        return $this->hasMany(UserProduct::class, 'user_id', 'user_id');
+    }
 	//Hasheao automático para el password al registrar
 	public function setPasswordAttribute($value){
 		$this->attributes['password'] = Hash::needsRehash($value) ? Hash::make($value) : $value;

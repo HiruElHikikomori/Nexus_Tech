@@ -17,29 +17,48 @@ class ReviewsController extends Controller
         $this->middleware(['auth']);
     }
 
-    // POST /reviews
+    /**
+     * POST /reviews
+     * Crea una reseña si el usuario compró el artículo y no ha reseñado el mismo ítem antes.
+     */
     public function store(StoreReviewRequest $request)
     {
         $userId = Auth::id();
-        $data = $request->validated();
+        $data   = $request->validated();
 
-        // Validar que haya comprado (Regla personalizada)
-        $rule = new PurchasedItem($userId, $data['product_id'] ?? null, $data['user_product_id'] ?? null);
+        // 1) Regla: solo puede reseñar si lo compró (orders + order_items)
+        $rule = new PurchasedItem(
+            $userId,
+            $data['product_id'] ?? null,
+            $data['user_product_id'] ?? null
+        );
+
         $validator = Validator::make(['check' => 1], ['check' => [$rule]]);
         if ($validator->fails()) {
-            return $this->responseBackOrJson($request, ['item' => $validator->errors()->first()]);
+            return $this->responseBackOrJson(
+                $request,
+                ['item' => $validator->errors()->first()],
+                null,
+                422
+            );
         }
 
-        // Evitar duplicado de reseña por user/item
+        // 2) Evitar duplicado de reseña por usuario + item (product_id XOR user_product_id)
         $exists = Review::where('user_id', $userId)
             ->when(!empty($data['product_id']), fn($q) => $q->where('product_id', $data['product_id']))
             ->when(!empty($data['user_product_id']), fn($q) => $q->where('user_product_id', $data['user_product_id']))
             ->exists();
 
         if ($exists) {
-            return $this->responseBackOrJson($request, ['review' => 'Ya dejaste una reseña para este artículo.']);
+            return $this->responseBackOrJson(
+                $request,
+                ['review' => 'Ya dejaste una reseña para este artículo.'],
+                null,
+                422
+            );
         }
 
+        // 3) Crear reseña
         Review::create([
             'user_id'         => $userId,
             'product_id'      => $data['product_id'] ?? null,
@@ -48,26 +67,43 @@ class ReviewsController extends Controller
             'comment'         => $data['comment'],
         ]);
 
-        return $this->responseBackOrJson($request, [], '¡Gracias por tu reseña!');
+        return $this->responseBackOrJson(
+            $request,
+            [],
+            '¡Gracias por tu reseña!'
+        );
     }
 
-    // opcional: borrar reseña propia
+    /**
+     * DELETE /reviews/{review}
+     * Permite al usuario borrar su propia reseña.
+     */
     public function destroy(Review $review)
     {
-        if ($review->user_id !== Auth::id()) {
+        if ((int)$review->user_id !== (int)Auth::id()) {
             return back()->withErrors(['auth' => 'No puedes borrar esta reseña.']);
         }
+
         $review->delete();
         return back()->with('success', 'Reseña eliminada.');
     }
 
-    private function responseBackOrJson(Request $request, array $errors = [], string $successMsg = null)
+    /**
+     * Respuesta consistente: JSON (200/4xx) o redirect back con errores/success.
+     */
+    private function responseBackOrJson(Request $request, array $errors = [], ?string $successMsg = null, int $status = 200)
     {
         if ($request->expectsJson()) {
-            if ($errors) return response()->json(['success' => false, 'errors' => $errors], 422);
-            return response()->json(['success' => true, 'message' => $successMsg]);
+            if (!empty($errors)) {
+                return response()->json(['success' => false, 'errors' => $errors], $status);
+            }
+            return response()->json(['success' => true, 'message' => $successMsg], $status);
         }
-        if ($errors) return back()->withErrors($errors)->withInput();
+
+        if (!empty($errors)) {
+            return back()->withErrors($errors)->withInput();
+        }
+
         return back()->with('success', $successMsg);
     }
 }

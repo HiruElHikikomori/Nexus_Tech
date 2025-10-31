@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Models\CartItem;
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CartItemsController extends Controller
 {
@@ -157,18 +160,58 @@ class CartItemsController extends Controller
             'cartEmpty' => CartItem::where('cart_id', $cart->cart_id)->doesntExist() // Para saber si el carrito quedó vacío
         ]);
     }
+public function deleteAll()
+{
+    $userID = Auth::id();
+    $cart   = Cart::firstOrCreate(['user_id' => $userID]);
 
-    public function deleteAll(){
-        $userID = Auth::id();
-        $cart = Cart::firstOrCreate(['user_id' => $userID]);
+    $items = CartItem::where('cart_id', $cart->cart_id)->get();
 
+    if ($items->isEmpty()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Tu carrito está vacío.',
+        ], 422);
+    }
+
+    return DB::transaction(function () use ($items, $cart, $userID) {
+        // Total simulado (suma count * unit_price)
+        $total = $items->reduce(fn($acc, $ci) => $acc + ($ci->count * $ci->unit_price), 0.0);
+
+        // 1) Crear orden (simulada)
+        $order = Order::create([
+            'user_id' => $userID,   // INT (signed)
+            'total'   => $total,    // DECIMAL(10,2)
+            'status'  => 'paid',    // o 'completed'/'simulated' si prefieres
+        ]);
+
+        // 2) Crear order_items (simulados) a partir del carrito
+        foreach ($items as $ci) {
+            OrderItem::create([
+                'order_id'        => $order->order_id, // BIGINT UNSIGNED
+                'product_id'      => $ci->products_id, // OJO: cart_items usa 'products_id'
+                'user_product_id' => null,             // si luego vendes P2P, úsalo aquí
+                'count'           => $ci->count,
+                'unit_price'      => $ci->unit_price,
+            ]);
+
+            // (Opcional) Simular decremento de stock:
+            // DB::table('products')->where('products_id', $ci->products_id)
+            //   ->decrement('stock', $ci->count);
+        }
+
+        // 3) Vaciar carrito (como antes)
         CartItem::where('cart_id', $cart->cart_id)->delete();
 
+        // 4) Respuesta idéntica a la que ya consumes en el front
         return response()->json([
-            'success' => true,
-            'message' => 'Compra realizada con éxito.', // Mensaje más neutro si se va a redirigir
-            'cart_cleared' => true, // Indicador para JS de que el carrito está vacío
-            'redirect_url' => route('user.product') // URL a la que redirigir
+            'success'        => true,
+            'message'        => 'Compra realizada con éxito.', // mantiene tu copy
+            'cart_cleared'   => true,
+            'redirect_url'   => route('user.product'),
+            // (Opcional) puedes incluir el id de la orden para depurar:
+            // 'order_id'    => $order->order_id,
         ]);
+    });
     }
 }

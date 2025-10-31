@@ -6,11 +6,11 @@
   <div class="row">
     <div class="col-md-12 col-lg-15 mx-auto"
          style="height:33vh; overflow:hidden;">
-      
+
       <div id="carouselExampleCaptions"
            class="carousel slide h-100 "
            data-bs-ride="carousel">
-        
+
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#carouselExampleCaptions"
                   data-bs-slide-to="0" class="active"
@@ -57,12 +57,12 @@
             <div class="card m-auto my-3 p-0 bg-secondary text-accent3 border-0" style="width: 18rem;">
                 <img src="{{ asset('img/products/' . $product->img_name) }}" class="card-img-top" style="height:17rem">
                 <div class="card-body text-center">
-                    <form class="add-to-cart-form" action="{{ route('cart.add-item') }}" method="POST">
+                 <form class="add-to-cart-form" action="{{ route('cart.store') }}" method="POST">
                         <input type="hidden" name="product_id" value="{{ $product->products_id }}">
                         <input type="hidden" name="count" value="1">
                         <h5 class="card-title">{{$product->name}}</h5>
                         <p class="card-text">$ {{ number_format($product->price, 2) }}</p>
-                        
+
                         <button type="button" class="btn btn-lg rounded btn-outline-info " data-bs-toggle="modal" data-bs-target="#ShowProduct{{ $product->products_id }}"><i class="bi bi-card-list"></i></button>
 
                         @csrf
@@ -99,7 +99,7 @@
                                             <input type="text" class="form-control border-0" id="name" name="name" value="{{ $product->name }}" disabled required>
                                             @error('name') <div class="text-danger">{{ $message }}</div> @enderror
                                         </div>
-                                        
+
                                         <div class="mb-3">
                                             <label for="name" class="form-label">Tipo:</label>
                                             <input type="text" class="form-control border-0" id="name" name="name" value="{{ $product->product_type->name ?? 'N/A' }}" disabled required>
@@ -121,19 +121,19 @@
                                             @error('name') <div class="text-danger">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer border border-accent1">
                             <button type="button" class="btn btn-lg btn-primary rounded-pill" data-bs-dismiss="modal">Regresar</button>
-                            <form class="add-to-cart-form" action="{{ route('cart.add-item') }}" method="POST">
+                           <form class="add-to-cart-form" action="{{ route('cart.store') }}" method="POST">
                                 <input type="hidden" name="product_id" value="{{ $product->products_id }}">
                                 <input type="hidden" name="count" value="1">
                                 @csrf
                                 <button type="submit" class="btn btn-lg rounded-pill btn-outline-success"><i class="bi bi-plus"></i>Añadir al carrito</button>
                             </form>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
 
 
 </div>
-    
+
 @endsection
 
 @push('scripts')

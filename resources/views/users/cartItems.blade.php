@@ -3,7 +3,7 @@
 
     {{-- Añade un data-product-url aquí para pasar la URL de la página de productos a JS --}}
     <div class="container" id="cart-container" data-product-url="{{ route('user.product') }}">
-        
+
 
         <div class="p-5 py-2 pt-5 m-5 bg-accent1 rounded m-auto" id="cart-items-wrapper"> {{-- ID para el contenedor de los items --}}
 
@@ -22,7 +22,7 @@
                     <h4>$ <span class="unit-price">{{number_format($Item -> unit_price, 2)}}</span></h4> {{-- Para fácil acceso --}}
                 </div>
                 <div class="col align-self-center">
-                    <form class="delete-item-form" data-item-id="{{ $Item->id_cart_items }}" action="{{ route('delete.cart.item', $Item->id_cart_items)}}" method="POST">
+                    <form class="delete-item-form" data-item-id="{{ $Item->id_cart_items }}" action="{{ route('cart.destroy', $Item->id_cart_items)}}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-lg btn-outline-danger border-4 bg-dark w-50"><i class="bi bi-trash-fill"></i></button>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="col align-self-center">
                     <div class="d-grid gap-2 d-md-block">
-                        <form class="update-quantity-form" action="{{ route('cart.update-item-quantity', $Item->id_cart_items) }}" method="POST" style="display:inline;">
+                        <form class="update-quantity-form" action="{{ route('cart.update', $Item->id_cart_items) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('PATCH')
                             <input type="hidden" name="operation" value="decrease">
@@ -39,7 +39,7 @@
 
                         <h1 class="btn btn-link link-underline link-underline-opacity-0 btn-lg text-white disabled item-count">{{$Item -> count}}</h1>
 
-                        <form class="update-quantity-form" action="{{ route('cart.update-item-quantity', $Item->id_cart_items) }}" method="POST" style="display:inline;">
+                        <form class="update-quantity-form" action="{{ route('cart.update', $Item->id_cart_items) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('PATCH')
                             <input type="hidden" name="operation" value="increase">
@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            
+
 
             @empty
                 <div id="empty-cart-message" class="text-center p-5">
@@ -67,7 +67,7 @@
                 </div>
             @endforelse
 
-            
+
             {{-- El display de este div se controla con JS --}}
             <div id="cart-summary" @if($CartItems->isEmpty()) style="display:none;" @endif>
                 <h4>El pedido se enviará a la siguiente dirección: <strong>{{ Auth::user()->address}}</strong> </h4>
@@ -79,15 +79,15 @@
             <div class="row m-auto my-5 ">
                 <a href="{{url('/products')}}" class="col col-md-2 btn btn-lg btn-primary d-flex justify-content-start rounded">Regresar al listado</a>
                 {{-- El display de este formulario se controla con JS --}}
-                <form id="clear-cart-form" class="col d-flex justify-content-end" action="{{ route('delete.cart.items') }}" method="POST" @if($CartItems->isEmpty()) style="display:none;" @endif>
+                <form id="clear-cart-form" class="col d-flex justify-content-end" action="{{ route('cart.destroy', $Item->id_cart_items)}}" method="POST" @if($CartItems->isEmpty()) style="display:none;" @endif>
                     @csrf
                     @method('DELETE')
-                    
+
                     <button type="submit" class="btn btn-lg btn-outline-success rounded">Realizar compra</button>
                 </form>
             </div>
             @endif
-            
+
 
         </div>
     </div>
