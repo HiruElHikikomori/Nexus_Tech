@@ -1,6 +1,6 @@
 @extends('layout.PlantillaAdmin')
 
-{{-- No se ayuda xd --}}
+{{-- No se ayuda xqd --}}
 
 @section('content')
 <div class="container-fluid bg-primary d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh;">

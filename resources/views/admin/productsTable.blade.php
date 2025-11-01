@@ -1,7 +1,7 @@
 @extends('layout.PlantillaAdmin')
 @section('content')
 
-{{-- No se ayuda xd --}}
+{{-- No se ayuda xdq --}}
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">

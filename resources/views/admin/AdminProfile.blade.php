@@ -1,6 +1,6 @@
 @extends('layout.PlantillaAdmin')
 
-{{-- No se ayuda xd --}}
+{{-- No se ayuda xqd --}}
 @section('content')
 
 

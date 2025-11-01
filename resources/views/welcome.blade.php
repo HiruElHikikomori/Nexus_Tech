@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-{{-- exo me va a matar --}}
+{{-- lolo --}}
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">

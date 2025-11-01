@@ -1,7 +1,7 @@
 @extends("layout.PlantillaUser")
 @section('content')
 
-{{-- exo me va a matar --}}
+{{-- ssssas --}}
 
 <div class="container-fluid bg-primary justify-content-center align-items-center" style="min-height: 100vh;">
     <div class="container py-5">
