@@ -28,19 +28,22 @@ class CartItem extends Model
 	protected $primaryKey = 'id_cart_items';
 	public $timestamps = false;
 
-	protected $casts = [
-		'cart_id' => 'int',
-		'products_id' => 'int',
-		'count' => 'int',
-		'unit_price' => 'float'
-	];
+    protected $casts = [
+        'cart_id'         => 'int',
+        'products_id'     => 'int',
+        'user_product_id' => 'int',
+        'count'           => 'int',
+        'unit_price'      => 'float',
+    ];
 
-	protected $fillable = [
-		'cart_id',
-		'products_id',
-		'count',
-		'unit_price'
-	];
+    // Puedes usar fillable o guarded, pero con esto va bien:
+    protected $fillable = [
+        'cart_id',
+        'products_id',
+        'user_product_id',
+        'count',
+        'unit_price',
+    ];
 
 	protected $guarded = [];
 

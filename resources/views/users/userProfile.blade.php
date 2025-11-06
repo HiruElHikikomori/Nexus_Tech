@@ -108,6 +108,53 @@
             </a>.
         </div>
     @endif
+    {{-- ===================== Sección: Reportes recibidos ===================== --}}
+<div class="card p-4 container bg-accent1 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-white mb-0">
+            Reportes recibidos sobre mis piezas
+        </h2>
+    </div>
+
+    @if(isset($reports) && $reports->isNotEmpty())
+        <div class="table-responsive">
+            <table class="table mb-0 text-center align-middle">
+                <thead>
+                    <tr>
+                        <th class="text-white">#</th>
+                        <th class="text-white">Pieza</th>
+                        <th class="text-white">Reportado por</th>
+                        <th class="text-white">Motivo</th>
+                        <th class="text-white">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($reports as $report)
+                        <tr>
+                            <td class="text-white">{{ $report->report_id }}</td>
+                            <td class="text-white">
+                                {{ $report->userProduct->name ?? 'Eliminada' }}
+                            </td>
+                            <td class="text-white">
+                                {{ $report->reporter->username ?? 'Usuario desconocido' }}
+                            </td>
+                            <td class="text-white text-start">
+                                {{ $report->reason }}
+                            </td>
+                            <td class="text-white-50">
+                                {{ $report->created_at->format('d/m/Y H:i') }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @else
+        <div class="alert alert-success mb-0">
+            <strong>No has recibido ningún reporte.</strong> Tus piezas están en buena reputación 😊
+        </div>
+    @endif
+</div>
 </div>
 
 @endsection

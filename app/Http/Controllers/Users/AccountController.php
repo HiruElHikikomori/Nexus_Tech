@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\UserProduct;
+use App\Models\Report;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
@@ -16,16 +17,23 @@ class AccountController extends Controller
     {
         $user = auth()->user();
 
-        // Últimas 5 piezas del usuario (puedes cambiar el número)
-        $userProducts = UserProduct::where('user_id', $user->user_id)
-            ->latest()
-            ->take(5)
-            ->get();
+    $userProducts = $user->userProducts()
+        ->latest()
+        ->take(5)
+        ->get();
 
-        return view('users.userProfile', [
-            'user'          => $user,
-            'userProducts'  => $userProducts,
-        ]);
+    // Reportes recibidos sobre sus piezas (de otros usuarios)
+    $reports = \App\Models\Report::with(['reporter', 'userProduct'])
+        ->where('reported_user_id', $user->user_id)
+        ->latest()
+        ->get();
+
+    // Retornar vista (manteniendo tu estilo original)
+    return view('users.userProfile', [
+        'user'          => $user,
+        'userProducts'  => $userProducts,
+        'reports'       => $reports, // 👈 agregado
+    ]);
     }
 
     //Editar perfil

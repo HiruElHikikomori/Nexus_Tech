@@ -8,7 +8,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
-use App\Models\UserProduct; // 👈 IMPORTANTE
+use App\Models\UserProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,14 +21,15 @@ class CartItemsController extends Controller
         $userID = $user->user_id;
 
         $cart   = Cart::firstOrCreate(['user_id' => $userID]);
-        $CartItems = CartItem::where('cart_id', $cart->cart_id)->get();
-
+        $CartItems = CartItem::with(['product', 'userProduct'])
+        ->where('cart_id', $cart->cart_id)
+        ->get();
         return view('users.cartItems', compact('CartItems', 'userID', 'cart'));
     }
 
     public function store(Request $request)
     {
-        // ✅ Ahora soporta product_id O user_product_id
+        // ✅ Soporta product_id (oficial) O user_product_id (segunda mano)
         $request->validate([
             'product_id'      => 'nullable|exists:products,products_id|required_without:user_product_id',
             'user_product_id' => 'nullable|exists:user_products,user_product_id|required_without:product_id',
@@ -50,7 +51,7 @@ class CartItemsController extends Controller
         $unitPrice = null;
         $message   = '';
 
-        // 🔹 Caso 1: producto oficial (catálogo normal)
+        // 🔹 Caso 1: producto oficial
         if ($request->filled('product_id')) {
             $product = Product::find($request->product_id);
 
@@ -63,10 +64,9 @@ class CartItemsController extends Controller
 
             $unitPrice = $product->price;
 
-            // Buscamos si ya existe ese producto oficial en el carrito
             $existingCartItem = CartItem::where('cart_id', $cart->cart_id)
                 ->where('products_id', $product->products_id)
-                ->whereNull('user_product_id') // diferenciamos de piezas de usuario
+                ->whereNull('user_product_id')
                 ->first();
 
             if ($existingCartItem) {
@@ -86,7 +86,7 @@ class CartItemsController extends Controller
             }
         }
 
-        // 🔹 Caso 2: pieza de usuario (catálogo de segunda mano)
+        // 🔹 Caso 2: pieza de usuario
         if ($request->filled('user_product_id')) {
             $userProduct = UserProduct::find($request->user_product_id);
 
@@ -99,10 +99,9 @@ class CartItemsController extends Controller
 
             $unitPrice = $userProduct->price;
 
-            // Buscamos si ya existe esa pieza de usuario en el carrito
             $existingCartItem = CartItem::where('cart_id', $cart->cart_id)
                 ->where('user_product_id', $userProduct->user_product_id)
-                ->whereNull('products_id') // diferenciamos de productos oficiales
+                ->whereNull('products_id')
                 ->first();
 
             if ($existingCartItem) {
@@ -122,7 +121,6 @@ class CartItemsController extends Controller
             }
         }
 
-        // Cantidad total de ítems en el carrito (oficiales + usuario)
         $newCartItemCount = CartItem::where('cart_id', $cart->cart_id)->sum('count');
 
         return response()->json([
@@ -138,7 +136,7 @@ class CartItemsController extends Controller
             'operation' => 'required|in:increase,decrease',
         ]);
 
-        if (Auth::id() != $cartItem->cart->user_id) {
+        if (Auth::user()->user_id != $cartItem->cart->user_id) {
             return response()->json([
                 'success' => false,
                 'message' => 'No tienes permiso para modificar este item.'
@@ -199,7 +197,7 @@ class CartItemsController extends Controller
     {
         $cartItem->load('cart');
 
-        if (Auth::id() != $cartItem->cart->user_id) {
+        if (Auth::user()->user_id != $cartItem->cart->user_id) {
             return response()->json([
                 'success' => false,
                 'message' => 'No tienes permiso para eliminar este ítem.'
@@ -232,7 +230,9 @@ class CartItemsController extends Controller
 
     public function deleteAll(Request $request)
     {
-        $userID = Auth::id();
+        $user   = Auth::user();
+        $userID = $user->user_id;
+
         $cart   = Cart::firstOrCreate(['user_id' => $userID]);
         $items  = CartItem::where('cart_id', $cart->cart_id)->get();
 
@@ -262,9 +262,8 @@ class CartItemsController extends Controller
             foreach ($items as $ci) {
                 OrderItem::create([
                     'order_id'        => $order->order_id,
-                    // 🔹 ahora soporta ambos tipos de item
-                    'product_id'      => $ci->products_id,       // puede ser null si es user_product
-                    'user_product_id' => $ci->user_product_id,   // puede ser null si es product
+                    'product_id'      => $ci->products_id,      // puede ser null
+                    'user_product_id' => $ci->user_product_id,  // puede ser null
                     'count'           => $ci->count,
                     'unit_price'      => $ci->unit_price,
                 ]);

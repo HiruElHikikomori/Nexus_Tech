@@ -141,6 +141,15 @@ Route::prefix('/users/{userId}/piezas')
     });
 
 // ===================================
+// Reportes (usuarios autenticados)
+// ===================================
+Route::middleware(['auth', 'role:Usuario'])->group(function () {
+    Route::post('/reports', [\App\Http\Controllers\Users\ReportsController::class, 'store'])
+        ->name('reports.store');
+});
+
+
+// ===================================
 // Zona Admin (auth + rol de admin)
 // ===================================
 

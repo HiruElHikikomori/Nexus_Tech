@@ -26,7 +26,7 @@
                 </div>
 
                 {{-- Ordenar por nombre --}}
-                <div class="col col-md-4 col-lg-3" data-bs-theme="dark">
+                <div class="col col-md-4 col-lg-3 " data-bs-theme="dark">
                     <label for="sort_by_name" class="form-label">Ordenar por Nombre</label>
                     <select class="form-select bg-primary border-primary" id="sort_by_name" name="sort_by_name">
                         <option value="">Sin Orden</option>
@@ -37,38 +37,39 @@
 
                 {{-- Rango de precio --}}
                 <div class="col col-md-4 col-lg-5 text-center">
-                    <label class="form-label">
+                    <label class="form-label ">
                         <h5>Rango de Precio:</h5>
                         <span>$</span><span id="minPriceDisplay">0</span> – $<span id="maxPriceDisplay">Máx</span>
                     </label>
                     <div id="price-slider"></div>
 
                     <input type="hidden" name="min_price" id="hidden_min_price"
-                        value="{{ request('min_price', 0) }}">
+                           value="{{ request('min_price', 0) }}">
                     <input type="hidden" name="max_price" id="hidden_max_price"
-                        value="{{ request('max_price', $maxProductPrice) }}">
+                           value="{{ request('max_price', $maxProductPrice) }}">
                 </div>
 
                 {{-- Botón --}}
                 <div class="justify-content-center align-items-center mt-5">
                     <button type="submit" class="btn btn-lg container-fluid rounded btn-accent2">Aplicar</button>
                 </div>
+
             </div>
+
         </form>
     </div>
 
     @if($items->isEmpty() && request('query'))
-        <div class="alert alert-warning mt-3" role="alert">
+        <div class="alert alert-warning" role="alert">
             No se encontraron piezas para tu búsqueda "{{ request('query') }}".
         </div>
     @elseif($items->isEmpty())
-        <div class="alert alert-info mt-3" role="alert">
+        <div class="alert alert-info" role="alert">
             No hay piezas disponibles en este momento que coincidan con tus filtros.
         </div>
     @endif
 </div>
 
-{{-- Lista de productos (piezas de usuario) --}}
 <div class="container bg-accent1 rounded text-white p-5 my-5">
     <h1 class="text-white py-3">Piezas de segunda mano</h1>
     <div class="row py-2 m-auto">
@@ -76,43 +77,24 @@
             <div class="card mx-2 my-3 p-0 bg-secondary text-accent3 border-0" style="width: 18rem;">
                 <img src="{{ asset('img/user_products/' . $item->img_name) }}" class="card-img-top" style="height:17rem; object-fit: cover;">
                 <div class="card-body text-center">
-
-                    {{-- 🔹 MISMO FORMATO QUE EL CATÁLOGO OFICIAL, PERO PARA UserProduct --}}
                     <form class="add-to-cart-form" action="{{ route('cart.store') }}" method="POST">
-                        {{-- IMPORTANTE: este campo lo usará el backend para saber que es una pieza de usuario --}}
                         <input type="hidden" name="user_product_id" value="{{ $item->user_product_id }}">
                         <input type="hidden" name="count" value="1">
-
                         <h5 class="card-title">{{ $item->name }}</h5>
                         <p class="card-text">$ {{ number_format($item->price, 2) }}</p>
-
-                        {{-- Ver detalles (modal) --}}
-                        <button type="button"
-                                class="btn btn-lg rounded btn-outline-info"
-                                data-bs-toggle="modal"
-                                data-bs-target="#ShowUserProduct{{ $item->user_product_id }}">
-                            <i class="bi bi-card-list"></i>
-                        </button>
+                        <button type="button" class="btn btn-lg rounded btn-outline-info " data-bs-toggle="modal" data-bs-target="#ShowUserProduct{{ $item->user_product_id }}"><i class="bi bi-card-list"></i></button>
 
                         @csrf
-                        {{-- Botón añadir al carrito (tarjeta) --}}
-                        <button type="submit" class="btn btn-lg rounded btn-outline-success offset-md-4">
-                            <i class="bi bi-plus"></i>
-                        </button>
+                        <button type="submit" class="btn btn-lg rounded btn-outline-success offset-md-4"><i class="bi bi-plus"></i></button>
                     </form>
-
                 </div>
             </div>
 
             {{-- Modal SHOW (dentro del bucle) --}}
-            <div class="modal fade"
-                 id="ShowUserProduct{{ $item->user_product_id }}"
-                 tabindex="-1"
-                 aria-labelledby="userProductLabel{{ $item->user_product_id }}"
-                 aria-hidden="true">
+            <div class="modal fade" id="ShowUserProduct{{ $item->user_product_id }}" tabindex="-1" aria-labelledby="userProductLabel{{ $item->user_product_id }}" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content p-3 bg-accent1 border-0">
-                        <div class="modal-header border border-accent1">
+                        <div class="modal-header border border border-accent1">
                             <h3 class="modal-title" id="userProductLabel{{ $item->user_product_id }}">Detalles de la pieza</h3>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -121,11 +103,8 @@
                                 <div class="card-body row container-fluid">
 
                                     <div class="col">
-                                        <img class="img-fluid rounded border-0"
-                                             src="{{ asset('img/user_products/' . $item->img_name) }}"
-                                             style="height: 12rem; object-fit: cover;">
+                                        <img class="img-fluid rounded border-0" src="{{ asset('img/user_products/' . $item->img_name) }}" style="height: 12rem; object-fit: cover;">
                                     </div>
-
                                     <div class="col-8">
                                         <div class="mb-3">
                                             <label class="form-label">No. de pieza:</label>
@@ -163,29 +142,64 @@
                                         </div>
                                     </div>
 
-                                    {{-- 🔹 Reseñas para piezas de usuario --}}
                                     <x-reviews :itemType="'user_product'" :itemId="$item->user_product_id" />
+                                        {{-- ========================
+                                            REPORTAR PIEZA (Modal)
+                                        ========================= --}}
+                                        <div class="text-end mt-4">
+                                            <button type="button" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal"
+                                                data-bs-target="#ReportModal{{ $item->user_product_id }}">
+                                                <i class="bi bi-flag-fill"></i> Reportar pieza
+                                            </button>
+                                        </div>
+
+                                        {{-- Modal para reportar --}}
+                                        <div class="modal fade" id="ReportModal{{ $item->user_product_id }}" tabindex="-1"
+                                            aria-labelledby="ReportLabel{{ $item->user_product_id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content bg-accent1 text-white border-0 p-3">
+                                                    <div class="modal-header border-accent1">
+                                                        <h5 class="modal-title" id="ReportLabel{{ $item->user_product_id }}">
+                                                            Reportar esta pieza
+                                                        </h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="{{ route('reports.store') }}" method="POST" class="report-form">
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="user_product_id" value="{{ $item->user_product_id }}">
+
+                                                            <div class="mb-3">
+                                                                <label for="reason{{ $item->user_product_id }}" class="form-label">Motivo del reporte:</label>
+                                                                <textarea name="reason" id="reason{{ $item->user_product_id }}" class="form-control bg-secondary text-white" rows="4"
+                                                                    placeholder="Explica brevemente el motivo..." required></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer border-accent1">
+                                                            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-danger">Enviar reporte</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                         </div>
-
                         <div class="modal-footer border border-accent1">
-                            <button type="button" class="btn btn-lg btn-primary rounded-pill" data-bs-dismiss="modal">
-                                Regresar
-                            </button>
-
-                            {{-- Botón de comprar dentro del modal, igual que en el catálogo oficial --}}
+                            <button type="button" class="btn btn-lg btn-primary rounded-pill" data-bs-dismiss="modal">Regresar</button>
                             <form class="add-to-cart-form" action="{{ route('cart.store') }}" method="POST">
                                 <input type="hidden" name="user_product_id" value="{{ $item->user_product_id }}">
                                 <input type="hidden" name="count" value="1">
                                 @csrf
-                                <button type="submit" class="btn btn-lg rounded-pill btn-outline-success">
-                                    <i class="bi bi-plus"></i> Añadir al carrito
-                                </button>
+                                <button type="submit" class="btn btn-lg rounded-pill btn-outline-success"><i class="bi bi-plus"></i>Añadir al carrito</button>
                             </form>
+
                         </div>
                     </div>
                 </div>
+
             </div>
 
         @endforeach
@@ -244,7 +258,7 @@
 
         const initialMin = parseFloat(hiddenMinPrice.value);
         const initialMax = parseFloat(hiddenMaxPrice.value);
-        const maxProductPrice = parseFloat('{{ $maxProductPrice }}');
+        const maxProductPrice = parseFloat('{{ $maxProductPrice }}'); // Get max price passed from controller
 
         if (priceSlider) {
             noUiSlider.create(priceSlider, {
@@ -257,16 +271,12 @@
                 step: 1,
                 tooltips: true,
                 format: {
-                    to: function (value) {
-                        return value.toFixed(0);
-                    },
-                    from: function (value) {
-                        return Number(value);
-                    }
+                    to: value => value.toFixed(0),
+                    from: value => Number(value)
                 }
             });
 
-            priceSlider.noUiSlider.on('update', function (values) {
+            priceSlider.noUiSlider.on('update', function(values) {
                 minPriceDisplay.textContent = values[0];
                 maxPriceDisplay.textContent = values[1];
                 hiddenMinPrice.value = values[0];
@@ -274,7 +284,7 @@
             });
         }
 
-        // 🔹 MISMA LÓGICA DE CARRITO QUE EN EL CATÁLOGO OFICIAL
+        // --- Carrito ---
         document.querySelectorAll('.add-to-cart-form').forEach(form => {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -296,7 +306,7 @@
                     .catch(error => {
                         console.error('Error al añadir al carrito:', error);
                         let errorMessage = 'Hubo un error al procesar tu solicitud.';
-                        if (error.response && error.response.data && error.response.data.message) {
+                        if (error.response?.data?.message) {
                             errorMessage = error.response.data.message;
                         }
                         showToast(errorMessage, 'danger');
@@ -304,6 +314,38 @@
                     .finally(() => {
                         submitButton.disabled = false;
                         submitButton.innerHTML = '<i class="bi bi-plus"></i>';
+                    });
+            });
+        });
+
+        // --- Reportes ---
+        document.querySelectorAll('.report-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const submitButton = this.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+
+                axios.post(this.action, formData)
+                    .then(response => {
+                        if (response.data.success) {
+                            showToast(response.data.message, 'success');
+                            bootstrap.Modal.getInstance(this.closest('.modal')).hide();
+                        } else {
+                            showToast('Error: ' + (response.data.errors?.report || 'Error desconocido'), 'danger');
+                        }
+                    })
+                    .catch(error => {
+                        let msg = 'Error al enviar el reporte.';
+                        if (error.response?.data?.errors) {
+                            msg = Object.values(error.response.data.errors).join(' ');
+                        }
+                        showToast(msg, 'danger');
+                    })
+                    .finally(() => {
+                        submitButton.disabled = false;
+                        submitButton.innerHTML = 'Enviar reporte';
                     });
             });
         });

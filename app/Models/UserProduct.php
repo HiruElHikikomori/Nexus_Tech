@@ -31,7 +31,7 @@ class UserProduct extends Model
     }
 
     /**
-     * Alias de la relación para poder usar with('user') sin errores.
+     * Alias para poder usar with('user') sin errores.
      */
     public function user()
     {
