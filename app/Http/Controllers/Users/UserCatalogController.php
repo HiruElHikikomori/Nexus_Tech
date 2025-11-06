@@ -11,15 +11,16 @@ class UserCatalogController extends Controller
 {
     public function index(Request $r)
     {
+        // 👇 ESTO YA LO TIENES
         $q   = $r->input('query');
         $pt  = $r->input('product_type_id');
         $min = $r->input('min_price');
         $max = $r->input('max_price');
-        $sort= $r->input('sort_by_name'); // 'asc'|'desc'|null
+        $sort= $r->input('sort_by_name');
 
         $items = UserProduct::query()
-            ->when($q, fn($qq)=>$qq->where(fn($w)=>$w
-                ->where('name','like',"%$q%")->orWhere('description','like',"%$q%")))
+            ->with('type','user')
+            ->when($q, fn($qq)=>$qq->where('name','like',"%{$q}%"))
             ->when($pt, fn($qq)=>$qq->where('product_type_id',$pt))
             ->when($min !== null && $min !== '', fn($qq)=>$qq->where('price','>=',(float)$min))
             ->when($max !== null && $max !== '', fn($qq)=>$qq->where('price','<=',(float)$max))

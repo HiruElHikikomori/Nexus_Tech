@@ -10,13 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class CartItem
- * 
+ *
  * @property int $id_cart_items
  * @property int $cart_id
  * @property int $products_id
  * @property int $count
  * @property float $unit_price
- * 
+ *
  * @property Cart $cart
  * @property Product $product
  *
@@ -46,11 +46,17 @@ class CartItem extends Model
 
 	public function cart()
 	{
-		return $this->belongsTo(Cart::class, 'cart_id');
+		return $this->belongsTo(Cart::class, 'cart_id', 'cart_id');
 	}
 
 	public function product()
 	{
-		return $this->belongsTo(Product::class, 'products_id');
+		return $this->belongsTo(Product::class, 'products_id', 'products_id');
 	}
+
+    public function userProduct()
+    {
+        return $this->belongsTo(UserProduct::class, 'user_product_id', 'user_product_id');
+    }
+
 }

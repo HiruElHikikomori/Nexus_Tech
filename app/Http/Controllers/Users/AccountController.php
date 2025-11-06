@@ -5,16 +5,27 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\UserProduct;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
     //Mostrar perfil
-    public function show(){
-        $user = Auth::user();
+    public function show()
+    {
+        $user = auth()->user();
 
-        return view('users.userProfile', compact('user'));
+        // Últimas 5 piezas del usuario (puedes cambiar el número)
+        $userProducts = UserProduct::where('user_id', $user->user_id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('users.userProfile', [
+            'user'          => $user,
+            'userProducts'  => $userProducts,
+        ]);
     }
 
     //Editar perfil
@@ -76,6 +87,6 @@ class AccountController extends Controller
 
         return redirect()->route('users.edit', $user->user_id) // O a donde quieras redirigir después de la edición
                          ->with('success', 'Perfil actualizado exitosamente.');
-    
+
     }
 }

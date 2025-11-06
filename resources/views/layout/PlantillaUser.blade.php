@@ -42,8 +42,32 @@
                     <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link link-info px-2">Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ url('/products') }}" class="nav-link link-info px-2">Catálogo</a>
+                    {{-- Catálogo con dropdown: oficiales / segunda mano --}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle link-info px-2 d-flex align-items-center"
+                        href="#"
+                        id="catalogDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                            Catálogo
+                            <i class="bi bi-caret-down-fill ms-1"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="catalogDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ url('/products') }}">
+                                    <i class="bi bi-pc-display-horizontal me-2"></i>
+                                    Piezas oficiales
+                                </a>
+                            </li>
+                            <li>
+                           <a class="dropdown-item" href="{{ route('user_catalog.index') }}">
+                                    <i class="bi bi-recycle me-2"></i>
+                                    Piezas de segunda mano
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a href="{{ url('/aboutus') }}" class="nav-link link-info px-2">Sobre nosotros</a>
