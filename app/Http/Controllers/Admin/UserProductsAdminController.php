@@ -11,26 +11,32 @@ class UserProductsAdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth']); // agrega tu 'role:admin' si aplica
+        // Solo admins pueden entrar a estas rutas
+        $this->middleware(['auth', 'role:Administrador']);
     }
 
     public function listByUser(User $user)
     {
-        $items = UserProduct::where('user_id', $user->user_id)
-            ->orderByDesc('user_product_id')->paginate(20);
+        $items = UserProduct::with(['type', 'owner'])
+            ->where('user_id', $user->user_id)
+            ->orderByDesc('user_product_id')
+            ->paginate(20);
 
-        return view('admin.user_products.index', compact('user','items'));
+        return view('admin.user_products.index', compact('user', 'items'));
     }
 
     public function destroy(UserProduct $userProduct)
     {
-        // Aquí asumimos middleware de admin
+        // Borrar imagen física si no es la default
         if ($userProduct->img_name && $userProduct->img_name !== 'default.png') {
-            $path = public_path('img/user_products/'.$userProduct->img_name);
-            if (file_exists($path)) @unlink($path);
+            $path = public_path('img/user_products/' . $userProduct->img_name);
+            if (file_exists($path)) {
+                @unlink($path);
+            }
         }
+
         $userProduct->delete();
 
-        return back()->with('success','Pieza eliminada por moderación.');
+        return back()->with('success', 'Pieza eliminada por moderación.');
     }
 }

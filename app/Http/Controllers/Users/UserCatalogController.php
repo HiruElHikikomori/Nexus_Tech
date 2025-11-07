@@ -18,7 +18,7 @@ class UserCatalogController extends Controller
         $sort = $r->input('sort_by_name');
 
         $items = UserProduct::query()
-            ->with('type') // y 'user' si luego quieres mostrar el vendedor
+            ->with(['type', 'owner']) // type = categoría, owner = vendedor
             ->when($q, function ($qq) use ($q) {
                 $qq->where('name', 'like', "%{$q}%");
             })
@@ -37,8 +37,10 @@ class UserCatalogController extends Controller
             ->paginate(12)
             ->appends($r->query());
 
+        // Tipos de producto (para filtros en el catálogo)
         $productTypes = ProductType::all();
 
+        // Precio máximo dinámico para el range de precio
         $maxProductPrice = UserProduct::max('price');
         $maxProductPrice = $maxProductPrice
             ? max(100, ceil($maxProductPrice / 100) * 100)

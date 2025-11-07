@@ -17,7 +17,7 @@ class userController extends Controller
         $query = $request->input('query'); // Obtener el término de búsqueda
 
         $users = User::query(); // Iniciar una nueva consulta de usuarios
-        
+
         // Filtrar por rol_id = 2
         $users->where('rol_id', 2);
 
@@ -41,7 +41,28 @@ class userController extends Controller
 
     public function destroy(User $user) // Asumiendo Route Model Binding para User
     {
-        
+        // ================== NUEVO: eliminar piezas del usuario ==================
+        // Recorremos todas las piezas publicadas por este usuario
+        foreach ($user->userProducts as $userProduct) {
+
+            // Borrar reportes asociados a esa pieza (si existe la relación)
+            if (method_exists($userProduct, 'reports')) {
+                $userProduct->reports()->delete();
+            }
+
+            // Borrar imagen física si no es la default
+            if ($userProduct->img_name && $userProduct->img_name !== 'default.png') {
+                $path = public_path('img/user_products/' . $userProduct->img_name);
+                if (file_exists($path)) {
+                    @unlink($path);
+                }
+            }
+
+            // Borrar la pieza
+            $userProduct->delete();
+        }
+        // ================== FIN BLOQUE NUEVO ==================
+
         $userID = $user->user_id;
         $cart = Cart::firstOrCreate(['user_id' => $userID]);
 
@@ -53,6 +74,9 @@ class userController extends Controller
         //Banea al usuario
         $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'Usuario y todos sus carritos e ítems de carrito eliminados con éxito.');
+        return redirect()->route('admin.users.index')->with(
+            'success',
+            'Usuario y todos sus carritos, ítems de carrito y piezas de usuario eliminados con éxito.'
+        );
     }
 }

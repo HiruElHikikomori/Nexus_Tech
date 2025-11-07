@@ -45,17 +45,31 @@
                             <td class="bg-secondary border border-primary">{{ $user->role->name ?? 'N/A' }}
                             </td>
 
-                            <td class="bg-secondary border border-primary">
-                                {{-- Botón VER: Asegúrate que el ID del modal es correcto --}}
-                                <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
-                                    data-bs-target="#ShowProduct{{ $user->user_id }}"><i class="bi bi-card-list"></i>
-                                    Ver</button> |
+                           <td class="bg-secondary border border-primary">
+                            {{-- Ver perfil rápido (modal) --}}
+                            <button type="button" class="btn btn-outline-info mb-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#ShowProduct{{ $user->user_id }}">
+                                <i class="bi bi-card-list"></i> Ver perfil
+                            </button>
+                            |
 
-                                {{-- Botón ELIMINAR: Asegúrate que el ID del modal es correcto --}}
-                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                    data-bs-target="#DeleteProduct{{ $user->user_id }}"> <i
-                                        class="bi bi-trash-fill"></i> Banear</button>
-                            </td>
+                            {{-- Ver piezas publicadas por este usuario --}}
+                            <a href="{{ route('admin.user_products.index', $user) }}"
+                                class="btn btn-outline-warning mb-1">
+                                <i class="bi bi-cpu"></i> Ver piezas
+                            </a>
+
+                            |
+
+                            {{-- Banear usuario --}}
+                            <button type="button" class="btn btn-outline-danger mb-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#DeleteProduct{{ $user->user_id }}">
+                                <i class="bi bi-trash-fill"></i> Banear
+                            </button>
+                        </td>
+
                         </tr>
 
                         {{-- Modal SHOW (dentro del bucle) --}}
@@ -145,7 +159,7 @@
                                             aria-label="Cerrar"></button>
                                     </div>
 
-                                    
+
                                         <div class="modal-body">
                                             <div class="card bg-secondary border-0">
                                                 <div class="card-body">
@@ -200,7 +214,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    
+
 
                                         <div class="modal-footer border-0">
                                             <form action="{{ route('admin.users.destroy', $user->user_id) }}" method="POST">
@@ -212,11 +226,11 @@
                                                     data-bs-dismiss="modal">Cancelar</button>
                                             </form>
                                         </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
-                        
+
 
                         @endforeach
                         <tr class="text-center bg-dark">

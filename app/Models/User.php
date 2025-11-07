@@ -56,6 +56,14 @@ class User extends Authenticatable
 		'rol_id'
 	];
 
+	/**
+	 * Para que el Route Model Binding use user_id en lugar de id.
+	 */
+	public function getRouteKeyName()
+	{
+		return 'user_id';
+	}
+
 	public function role()
 	{
 		return $this->belongsTo(Role::class, 'rol_id');
@@ -65,10 +73,12 @@ class User extends Authenticatable
 	{
 		return $this->belongsTo(Cart::class, 'cart_id');
 	}
+
     public function userProducts()
     {
         return $this->hasMany(UserProduct::class, 'user_id', 'user_id');
     }
+
 	//Hasheao automático para el password al registrar
 	public function setPasswordAttribute($value){
 		$this->attributes['password'] = Hash::needsRehash($value) ? Hash::make($value) : $value;

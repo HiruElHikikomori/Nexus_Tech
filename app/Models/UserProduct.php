@@ -23,6 +23,14 @@ class UserProduct extends Model
     ];
 
     /**
+     * Para que el Route Model Binding use user_product_id en lugar de id.
+     */
+    public function getRouteKeyName()
+    {
+        return 'user_product_id';
+    }
+
+    /**
      * Dueño de la pieza (nombre original que ya tenías).
      */
     public function owner()
@@ -44,5 +52,13 @@ class UserProduct extends Model
     public function type()
     {
         return $this->belongsTo(ProductType::class, 'product_type_id', 'product_type_id');
+    }
+
+    /**
+     * Reportes asociados a esta pieza de usuario.
+     */
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'user_product_id', 'user_product_id');
     }
 }
