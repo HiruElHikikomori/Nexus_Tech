@@ -81,7 +81,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                    class="btn btn-lg btn-outline-danger border-4 bg-dark w-50">
+                                    class="btn btn-lg btn-outline-danger border-2 bg-dark w-50">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
                         </form>
@@ -99,7 +99,7 @@
                                 @method('PATCH')
                                 <input type="hidden" name="operation" value="decrease">
                                 <button type="submit"
-                                        class="btn btn-sm btn-outline-danger border-4 bg-dark rounded-circle"
+                                        class="btn btn-sm btn-outline-danger border-2 bg-dark rounded-circle"
                                         title="Disminuir cantidad">
                                     <i class="bi bi-dash h1"></i>
                                 </button>
@@ -118,7 +118,7 @@
                                 @method('PATCH')
                                 <input type="hidden" name="operation" value="increase">
                                 <button type="submit"
-                                        class="btn btn-sm btn-outline-success border-4 bg-dark rounded-circle"
+                                        class="btn btn-sm btn-outline-success border-2 bg-dark rounded-circle"
                                         title="Aumentar cantidad">
                                     <i class="bi bi-plus h1"></i>
                                 </button>

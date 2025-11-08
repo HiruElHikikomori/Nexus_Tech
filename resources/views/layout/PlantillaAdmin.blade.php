@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">  {{-- estilo personalizado temporal --}}
+    <link rel="icon" type="image/png" href="{{ asset('img/icon.png') }}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,7 +51,7 @@
                         <a href="{{ url('/adminProfile') }}" class="nav-link link-info px-2">{{ Auth::user()->username }}</a>
                     </li>
                     
-                    <li class="nav-item me-5">
+                    <li class="nav-item log-out me-5">
                         <form action="{{ route('logout') }}" method="post">
                             @csrf
                             <button type="submit" class="nav-link link-danger px-2">Cerrar sesión</button>
@@ -58,7 +61,7 @@
                 </ul>
 
                 <!-- 🔹 Barra de búsqueda -->
-                <li class="nav-item rounded border-0 input-group-text">
+                <li class="nav-item rounded border-0 input-group-text bg-transparent">
                     <form class="d-flex align-items-center" role="search"
                         action="{{
                             Request::is('AdminUsers*') ? route('admin.users.index') :
@@ -66,7 +69,7 @@
                             route('admin.products.index'))
                         }}"
                         method="GET">
-                        <input class="form-control rounded border-0 w-100" type="search" placeholder="Buscar" aria-label="Search" name="query" value="{{ request('query') }}">
+                        <input class="form-control rounded border-1 w-100" type="search" placeholder="Buscar" aria-label="Search" name="query" value="{{ request('query') }}">
 
                         <button class="btn" type="submit">
                             <i class="bi bi-search"></i>

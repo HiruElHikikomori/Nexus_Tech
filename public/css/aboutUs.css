@@ -1,0 +1,35 @@
+/* estilo aboutUs */
+
+.bg-accent1 {
+  background: rgba(25, 35, 30, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Título */
+.bg-accent1 h3 {
+  color: #64ca92;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Texto */
+.bg-accent1 p {
+  color: #e0f2e9;
+  line-height: 1.7;
+  font-size: 1.1rem;
+}
+
+/* Galería inferior */
+.bg-accent1 .row.text-center img {
+  object-fit: cover;
+  border-radius: 10px;
+  height: 220px;
+}
+
+.bg-accent1 .row.text-center img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(100, 202, 146, 0.3);
+}
+
