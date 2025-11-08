@@ -19,7 +19,7 @@
 
             <!-- Logo del sitio -->
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('img/Logo_pagina.png') }}" class="img-fluid" style="max-height: 100px;" alt="Logo">
+                 <img src="{{ asset('img/Logo_pagina.png') }}" style="max-height: 100px;" alt="Logo">
             </a>
 
             <!-- Menú, búsqueda y carrito -->

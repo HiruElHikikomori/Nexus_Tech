@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name', 100);
             $table->integer('product_type_id')->index('products_ibfk_1');
             $table->text('description');
-            $table->decimal('price', 7);
+            $table->decimal('price', 10);
             $table->integer('stock');
             $table->string('img_name');
         });

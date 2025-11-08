@@ -20,12 +20,19 @@
     
     @stack('scripts')
     <!-- 🔷 NAVBAR: barra superior de navegación -->
-    <nav class=" text-white py-3 navbar navbar-expand-lg bg-secondary" >
+    <nav class="d-flex py-3 navbar navbar-expand-lg sticky-top shadow-sm"  
+     style="
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(25, 30, 35, 0.8);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+        transition: background 0.3s ease;">
         <div class="container-fluid">
 
             <!-- Logo del sitio -->
             <a class="navbar-brand" href="{{ url('/controlPanel') }} ">
-                <img src="{{ asset('img/Logo_pagina.png') }}" class="img-fluid" style="max-height: 100px;" alt="Logo">
+                <img src="{{ asset('img/Logo_pagina.png') }}" style="height: 60px;" alt="Logo">
             </a>
 
             <!-- Menú, búsqueda y carrito -->

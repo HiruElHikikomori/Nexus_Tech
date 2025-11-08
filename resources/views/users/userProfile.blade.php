@@ -109,6 +109,8 @@
         </div>
     @endif
     {{-- ===================== Sección: Reportes recibidos ===================== --}}
+
+    <br><br>
 <div class="card p-4 container bg-accent1 mb-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="text-white mb-0">

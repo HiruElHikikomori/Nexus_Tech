@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('cart_items', function (Blueprint $table) {
             $table->integer('id_cart_items', true);
             $table->integer('cart_id')->index('cart_id');
-            $table->integer('products_id')->index('products_id');
+            $table->unsignedBigInteger('products_id')->nullable()->index('products_id');
+            $table->unsignedBigInteger('user_product_id')->nullable();
             $table->integer('count');
-            $table->decimal('unit_price', 7);
+            $table->decimal('unit_price', 10);
         });
     }
 

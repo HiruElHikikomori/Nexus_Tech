@@ -6,22 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('cart_items', function (Blueprint $table) {
-            // 👇 ¡QUITAMOS ESTA LÍNEA QUE ROMPE!
-            // $table->dropForeign('cart_items_ibfk_2');
-
-            // Solo intentamos hacer products_id nullable
-            $table->unsignedBigInteger('products_id')->nullable()->change();
+            $table->foreign(['cart_id'], 'cart_items_ibfk_1')->references(['cart_id'])->on('cart')->onUpdate('restrict')->onDelete('restrict');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('cart_items', function (Blueprint $table) {
-            // Volvemos a NOT NULL si hacemos rollback
-            $table->unsignedBigInteger('products_id')->nullable(false)->change();
+            $table->dropForeign('cart_items_ibfk_1');
         });
     }
 };

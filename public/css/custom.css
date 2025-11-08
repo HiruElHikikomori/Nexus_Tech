@@ -1,0 +1,29 @@
+/* 🔹 Transición suave para los enlaces */
+.nav-link {
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+/* 🔹 Al pasar el mouse: color cian brillante */
+.nav-link:hover {
+  color: #64ca92 !important;
+  text-shadow: 0 0 8px #64ca92;
+}
+
+.log-out:hover button.nav-link {
+  color: #e20f0f !important;
+  text-shadow: 0 0 8px #e20f0f;
+}
+
+
+/* 🔹 Fondo del menú desplegable (mantiene look oscuro) */
+.dropdown-menu-dark {
+  background: rgba(15, 20, 25, 0.9);
+  backdrop-filter: blur(8px);
+}
+
+/* 🔹 Hover en los elementos del dropdown */
+.dropdown-item:hover {
+  background-color: rgba(0, 255, 255, 0.1);
+  color: #00ffff !important;
+}
+
