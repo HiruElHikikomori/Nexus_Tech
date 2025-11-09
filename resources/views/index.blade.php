@@ -146,6 +146,52 @@
 
 </div>
 
+<style>
+  /* Indicadores */
+  .carousel-indicators [data-bs-target] {
+      background-color: #64ca92 !important;
+      opacity: 0.5;
+      transition: all 0.3s ease;
+  }
+
+  .carousel-indicators .active {
+      opacity: 1;
+      transform: scale(1.3);
+  }
+
+  /* Botones prev/next */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(100%) brightness(200%);
+  background-color: rgba(0, 0, 0, 0.4);
+  
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  background-size: 60%;
+  transition: all 0.3s ease;
+}
+
+/* Efecto al pasar el mouse */
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+  background-color: rgba(100, 202, 146, 0.9); 
+  filter: invert(100%) brightness(300%);
+}
+
+
+  /* Opcional: un poco más de visibilidad en los bordes de las imágenes */
+  .carousel-inner img {
+      filter: brightness(0.9) contrast(1.1);
+      transition: filter 0.4s ease;
+  }
+
+  .carousel-inner:hover img {
+      filter: brightness(1);
+  }
+</style>
+
+
 @endsection
 
 @push('scripts')

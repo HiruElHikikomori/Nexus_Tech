@@ -25,7 +25,7 @@
             <!-- Menú, búsqueda y carrito -->
             <div class="d-flex me-5 align-items-center">
 
-                <!-- 🔹 Menú de navegación -->
+                <!--  Menú de navegación -->
                 <ul class="navbar-nav flex-row me-3 gap-5">
                     <li class="nav-item me-2">
                         <a href="#" class="nav-link link-info px-2">Inicio</a>
@@ -48,7 +48,7 @@
  
                 </ul>
 
-                <!-- 🔹 Barra de búsqueda -->
+                <!--  Barra de búsqueda -->
                 <form class="d-flex align-items-center me-3" role="search" style="position: relative; max-width: 500px;">
                     <input class="form-control" type="search" placeholder="Buscar" aria-label="Search" style="padding-right: 100px;">
                     <button class="btn btn-outline-success position-absolute" type="submit"
@@ -57,7 +57,7 @@
                     </button>
                 </form>
 
-                <!-- 🔹 Botón del carrito -->
+                <!--  Botón del carrito -->
                 <li class="d-flex align-items-center nav-item">
                     <a class="nav-link" href="{{ route('user.cart') }}">
                         <i class="bi bi-cart"></i>
@@ -72,12 +72,12 @@
     <!-- 🔻 Contenido dinámico (Blade) -->
     @yield('content')
 
-    <!-- 🔸 FOOTER: pie de página fijo -->
+    <!--  FOOTER: pie de página fijo -->
     <footer class="footer d-flex text-light  mt-auto" style="background-color: #111B1F;">
         <div class="container-fluid py-3 mx-5">
             <div class="row align-items-center text-center text-md-start justify-content-between">
                 
-                <!-- 🔹 Columna 1: Texto informativo de la empresa -->
+                <!--  Columna 1: Texto informativo de la empresa -->
                 <div class="col-md-4 mb-2 mb-md-0">
                     <small>
                         <p class="mb-1 fw-bold">✨En NexusTech, ¡te ofrecemos los mejores proveedores! ✨</p>
@@ -88,14 +88,14 @@
                     </small>
                 </div>
 
-                <!-- 🔹 Columna 2: Logo centrado -->
+                <!--  Columna 2: Logo centrado -->
                 <div class="col-md-2 mb-2 mb-md-0 text-center">
                     <a class="navbar-brand" href="#">
                         <img src="{{ asset('img/Logo_pagina.png') }}" class="img-fluid" style="max-height: 100px;" alt="Logo">
                     </a>
                 </div>
 
-                <!-- 🔹 Columna 3: Información de contacto y redes sociales -->
+                <!--  Columna 3: Información de contacto y redes sociales -->
                 <div class="col-md-4 mb-2 mb-md-0">
                     <div class="row">
                         <!-- Contacto -->

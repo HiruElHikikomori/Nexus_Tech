@@ -1,4 +1,4 @@
-/* 🔹 Transición suave para los enlaces */
+/*  Transición suave para los enlaces */
 .nav-link {
   transition: color 0.2s ease, text-shadow 0.2s ease;
 }
@@ -20,7 +20,7 @@
   backdrop-filter: blur(8px);
 }
 
-/* 🔹 Hover en los elementos del dropdown */
+/*  Hover en los elementos del dropdown */
 .dropdown-item:hover {
   background-color: rgba(0, 255, 255, 0.1);
   color: #64ca92 !important;
@@ -74,3 +74,52 @@
   transform: translateY(0);
 }
 
+/* Hover para el carrito */
+.nav-item .btn i.bi-cart {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.nav-item .btn:hover i.bi-cart {
+  color: #6ebaae; /* o tu color accent */
+  transform: scale(1.2);
+}
+
+/* Opcional: animación sutil al hacer clic */
+.nav-item .btn:active i.bi-cart {
+  transform: scale(0.9);
+}
+
+
+.nav-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.nav-indicator a {
+  text-decoration: none;
+  color: #64ca92;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.active-link {
+  color: #64ca92 !important;
+  position: relative;
+}
+
+.active-link::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #64ca92;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(100, 202, 146, 0.6);
+}

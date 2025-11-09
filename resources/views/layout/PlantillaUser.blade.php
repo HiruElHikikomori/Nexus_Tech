@@ -41,6 +41,8 @@
         <!-- ^ estilo tipo vidrio ^  -->
     <div class="container-fluid">
 
+    
+
         <!-- Logo del sitio -->
         <a class="navbar-brand" href="{{ url('/') }} ">
             <img src="{{ asset('img/Logo_pagina.png') }}" style="max-height: 65px;" alt="Logo">
@@ -49,23 +51,26 @@
         <!-- Menú, búsqueda y carrito -->
         <div class="d-flex row">
 
-            <!-- 🔹 Menú de navegación -->
-            <ul class="col navbar-nav flex-row me-5 gap-5 input-group">
+           <ul class="col navbar-nav flex-row me-5 gap-5 input-group">
+
+                <!--  Inicio -->
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link link-info px-2">Inicio</a>
+                    <a href="{{ url('/') }}" 
+                    class="nav-link px-2 {{ request()->is('/') ? 'active-link' : 'link-info' }}">
+                    Inicio
+                    </a>
                 </li>
 
+                <!--  Catálogo con dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle link-info px-2 d-flex align-items-center"
+                    <a class="nav-link dropdown-toggle px-2 d-flex align-items-center {{ request()->is('user_catalog*') ? 'active-link' : 'link-info' }}"
                         href="#"
                         id="catalogDropdown"
                         role="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Catálogo
-                        <!-- <i class="bi bi-caret-down-fill ms-1"></i> -->
                     </a>
-
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="catalogDropdown">
                         <li>
                             <a class="dropdown-item" href="{{ url('/products') }}">
@@ -82,49 +87,58 @@
                     </ul>
                 </li>
 
+                <!--  Sobre nosotros -->
                 <li class="nav-item">
-                    <a href="{{ url('/aboutus') }}" class="nav-link link-info px-2">Sobre nosotros</a>
+                    <a href="{{ url('/aboutus') }}" 
+                    class="nav-link px-2 {{ request()->is('aboutus') ? 'active-link' : 'link-info' }}">
+                    Sobre nosotros
+                    </a>
                 </li>
 
+                <!--  Mostrar opciones según sesión -->
                 @guest
-                <li class="nav-item">
-                    <a href="{{ url('/login') }}" class="nav-link link-info px-2">Iniciar sesión</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('/register') }}" class="nav-link link-info px-2">Registrarse</a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/login') }}" class="nav-link link-info px-2">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/register') }}" class="nav-link link-info px-2">Registrarse</a>
+                    </li>
                 @endguest
 
                 @auth
-                <li class="nav-item">
-                    <a href="{{ url('/userProfile') }}" class="nav-link link-info px-2">{{ Auth::user()->username }}</a>
-                </li>
-                <li class="nav-item log-out">
-                    <form action="{{ route('logout') }}" method="post">
-                        @csrf
-                        <button type="submit" class="nav-link link-danger px-2">Cerrar sesión</button>
-                    </form>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/userProfile') }}" 
+                        class="nav-link px-2 {{ request()->is('userProfile') ? 'active-link' : 'link-info' }}">
+                        {{ Auth::user()->username }}
+                        </a>
+                    </li>
+                    <li class="nav-item log-out">
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button type="submit" class="nav-link link-danger px-2">Cerrar sesión</button>
+                        </form>
+                    </li>
                 @endauth
 
-                <!-- 🔹 Barra de búsqueda -->
+                <!--  Barra de búsqueda -->
                 <li class="nav-item rounded border-0 input-group-text bg-transparent">
                     <form class="d-flex align-items-center" role="search" action="{{ route('products.search') }}" method="GET">
-                        <input class="form-control rounded border-0 w-100 bg-dark text-light" 
-                               type="search" placeholder="Buscar" aria-label="Search" name="query" value="{{ request('query') }}">
+                        <input class="form-control rounded border-1 w-100 bg-dark text-light" 
+                            type="search" placeholder="Buscar" aria-label="Search" name="query" value="{{ request('query') }}">
                         <button class="btn text-light" type="submit">
                             <i class="bi bi-search"></i>
                         </button>
                     </form>
                 </li>
 
-                <!-- 🔹 Botón del carrito -->
+                <!--  Botón del carrito -->
                 <li class="nav-item d-flex align-items-center">
                     <a class="btn btn-lg rounded border-0 text-light" href="{{ route('cart.index') }}">
                         <i class="bi bi-cart"></i>
                     </a>
                 </li>
             </ul>
+
         </div>
     </div>
 </nav>
@@ -152,12 +166,12 @@
         </div>
     </div>
 
-    <!-- 🔸 FOOTER: pie de página fijo -->
+    <!--  FOOTER: pie de página fijo -->
     <footer class="footer d-flex text-light mt-auto bg-secondary">
         <div class="container-fluid py-3 mx-5">
             <div class="row align-items-center text-center text-md-start justify-content-between m-auto">
 
-                <!-- 🔹 Columna 1: Texto informativo de la empresa -->
+                <!--  Columna 1: Texto informativo de la empresa -->
                 <div class="col-md-4 mb-2 mb-md-0">
                     <small>
                         <p class="mb-1 fw-bold">✨En NexusTech, ¡te ofrecemos los mejores proveedores! ✨</p>
@@ -168,14 +182,14 @@
                     </small>
                 </div>
 
-                <!-- 🔹 Columna 2: Logo centrado -->
+                <!--  Columna 2: Logo centrado -->
                 <div class="col-md-2">
                     <a class="navbar-brand" href="#">
                         <img src="{{ asset('img/Logo_pagina.png') }}" class="img-fluid mh-100 px-5">
                     </a>
                 </div>
 
-                <!-- 🔹 Columna 3: Información de contacto y redes sociales -->
+                <!--  Columna 3: Información de contacto y redes sociales -->
                 <div class="col-md-4 mb-2 mb-md-0">
                     <div class="row">
                         <!-- Contacto -->

@@ -41,7 +41,7 @@
             <!-- Menú, búsqueda y carrito -->
             <div class="d-flex me-5 align-items-center">
 
-                <!-- 🔹 Menú de navegación -->
+                <!--  Menú de navegación -->
                 <ul class="navbar-nav flex-row me-3 gap-5">
                     <li class="nav-item me-2">
                         <a href="{{ url('/controlPanel') }} " class="nav-link link-info px-2">Panel de control</a>
@@ -60,7 +60,7 @@
                     </li>
                 </ul>
 
-                <!-- 🔹 Barra de búsqueda -->
+                <!--  Barra de búsqueda -->
                 <li class="nav-item rounded border-0 input-group-text bg-transparent">
                     <form class="d-flex align-items-center" role="search"
                         action="{{
@@ -85,12 +85,12 @@
     </main>
     
 
-    <!-- 🔸 FOOTER: pie de página fijo -->
+    <!--  FOOTER: pie de página fijo -->
     <footer class="footer d-flex text-light  mt-auto" style="background-color: #111B1F; font-family:montserrat, sans-serif">
         <div class="container-fluid py-3 mx-5">
             <div class="row align-items-center text-center text-md-start justify-content-between">
                 
-                <!-- 🔹 Columna 1: Texto informativo de la empresa -->
+                <!--  Columna 1: Texto informativo de la empresa -->
                 <div class="col-md-4 mb-2 mb-md-0">
                     <small>
                         <p class="mb-1 fw-bold">✨En NexusTech, ¡te ofrecemos los mejores proveedores! ✨</p>
@@ -101,14 +101,14 @@
                     </small>
                 </div>
 
-                <!-- 🔹 Columna 2: Logo centrado -->
+                <!--  Columna 2: Logo centrado -->
                 <div class="col-md-2 mb-2 mb-md-0 text-center">
                     <a class="navbar-brand" href="#">
                         <img src="{{ asset('img/Logo_pagina.png') }}" class="img-fluid" style="max-height: 100px;" alt="Logo">
                     </a>
                 </div>
 
-                <!-- 🔹 Columna 3: Información de contacto y redes sociales -->
+                <!--  Columna 3: Información de contacto y redes sociales -->
                 <div class="col-md-4 mb-2 mb-md-0">
                     <div class="row">
                         <!-- Contacto -->

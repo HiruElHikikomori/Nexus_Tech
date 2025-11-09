@@ -411,3 +411,24 @@
         </div>
     </div>
 </div>
+
+
+<style>
+
+.modal-content {
+  /* background-color: #1e2a3a !important;  */
+  color: #f8f9fa; 
+  border: 2px solid #6ebaae; 
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); 
+}
+
+/*  Oscurece el fondo detrás del modal */
+.modal-backdrop.show {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.btn-close {
+  filter: invert(1);
+}
+</style>
+
